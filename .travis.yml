@@ -1,0 +1,25 @@
+sudo: required
+dist: trusty
+before_install:
+  - sudo apt-get -qq update && sudo apt-get install -y --no-install-recommends cm-super
+  texlive-fonts-recommended texlive-latex-extra texlive-fonts-extra dvipng texlive-latex-recommended
+  python3-pygments texlive-lang-german texlive-doc-de texlive texlive-lang-german
+  texlive-doc-de texlive-latex-extra texlive-full python3-pygments python-pygments
+  install:
+    script:
+      - mkdir _build
+      - pdflatex -shell-escape -interaction=nonstopmode -synctex=1 -halt-on-error -output-directory
+      _build nop.tex
+      - pdflatex -shell-escape -interaction=nonstopmode -synctex=1 -halt-on-error -output-directory
+      _build nop.tex
+
+      deploy:
+        provider: releases
+        api_key:
+          secure: GV7nYRgki7XrREskSJNNN+CcY6sgOikb0OXhvm4C7UNhr8geYzF3Kg0DGiedE6+xVb+l205n59/ua4Qmnk8I2IsU5jEX6nJ2rT9iX6gYt6j6rQY1kNuYrLM69XXVhRuFJy+RuoHsQCMlE/negO/D26fPLKlXK9V/btva8hbjX3VJ7me4874cUWapGLKfXchpD1a6o1VSIMOjrCJGP7xAgguvkWrpabl74tPRq6pMnAWb5YUx7WBwTPJ0AVeXp6t8AlKeSYzUXgFTi3GTMchseKLcMHNUYqHvylDrAhky7r0Fiy3qO5jKnvT+wn+6A2VNVpFgu10PUZfrOn276RBafRdmnbt+ym5S2sIAyqUO/YRvrNsmMYvX+IhJKHhg8sckShgwjJnxT6TXGSxHGOU+7WwXZ5hhrK236kyRQFyTKN9gBBb/dnW8930vRsguzxXei2ppitO1oLtkujc42Q2yRyZgVdMne+Jwx1Ly7Umey1mOnae+X6PTjYlA7CLGNoxF2JdHwPHKOqyJrLCwLs6CLdxp9aKYxe9w7+ymsR+QdW0mCMiILikq6MHhKvWsJRXoZpklP2m2ospGHXx7d098/9pmRCvkcGp5Ui91QEPI7Eh+N3mtlzkKwe9F+4ko+yghnaM0kiXYOVoQTFWlG5tbki4eLHTuEzr2+TK+Eg5XRzw=
+          file: _build/nop.pdf
+          skip_cleanup: true
+          on:
+            repo: NOPtex/NOP
+            tags: true
+            all_branches: true
